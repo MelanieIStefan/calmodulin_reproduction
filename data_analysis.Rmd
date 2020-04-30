@@ -26,10 +26,15 @@ names(figure3) <- c("Ca","saturation")
 
 ```{r}
 p3 <- ggplot(figure3, aes(x=Ca,y=saturation))
-p3 <- p3 + geom_point() + scale_x_log10()
+p3 <- p3 + geom_line() + scale_x_log10()
 p3 <- p3 + ylab("[Ca_bound]/[calmodulin]") + xlab("[Ca] (M)")
 p3 <- p3 + ggtitle("Calmodulin saturation")
 p3 
+
+png("calmodulin_saturation.png", width = 4, height = 4, units = 'in', res = 300)
+p3
+dev.off()
+
 ```
 
 

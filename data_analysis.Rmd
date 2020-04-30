@@ -13,6 +13,7 @@ Load necessary libraries
 
 ```{r}
 library(ggplot2)
+library(reshape2)
 ```
 
 # Figure 3
@@ -38,7 +39,7 @@ p3
 dev.off()
 ```
 
-# Figure 3
+# Figure 4
 
 The data is stored in four different data files (one for each curve). Import them and a column specifying their condition.
 
@@ -72,4 +73,46 @@ Plot the data:
 p4 <- ggplot(figure4, aes(x=Ca,y=ybar,col=condition))
 p4 <- p4+geom_line()+ scale_x_log10()
 p4 <- p4 + ylab("fractional occupancy") + xlab("[Ca] (M)")
+p4
+
+png("Shift_to_R_with_target.png", width = 6, height = 4, units = 'in', res = 300)
+p4
+dev.off()
+```
+# Figure 5
+
+Import the data; get rid of extra column 
+
+```{r}
+figure5 <- read.table("Figure5.txt",sep="\t",header=FALSE)
+figure5 <- figure5[,1:3]
+```
+
+In order to name the columns, we need to know in which order they were defined in the model: First CaMKII, then PP2B
+
+```{r}
+names(figure5) <- c("Ca","CaMKII","PP2B")
+```
+
+Normalise CaMKII and PP2B to their respective max, then melt the dataset
+
+```{r}
+figure5$CaMKII <- figure5$CaMKII/(max(figure5$CaMKII))
+figure5$PP2B <- figure5$PP2B/(max(figure5$PP2B))
+figure5 <- melt(figure5,id="Ca")
+```
+
+Plot the data
+
+```{r}
+p5 <- ggplot(figure5, aes(x = Ca,y=value, color=variable))
+p5 <- p5 + geom_line()  
+p5 <- p5 + scale_x_log10()
+p5 <- p5 + ylab("activity (normalised)") + xlab("[Ca] (M)")
+p5
+
+png("CaMKII_PP2B.png", width = 6, height = 4, units = 'in', res = 300)
+p5
+dev.off()
+
 ```

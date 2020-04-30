@@ -24,6 +24,8 @@ figure3 <- read.table("Figure3.txt",sep="\t",header=FALSE)
 names(figure3) <- c("Ca","saturation")
 ```
 
+Plot the data
+
 ```{r}
 p3 <- ggplot(figure3, aes(x=Ca,y=saturation))
 p3 <- p3 + geom_line() + scale_x_log10()
@@ -34,7 +36,40 @@ p3
 png("calmodulin_saturation.png", width = 4, height = 4, units = 'in', res = 300)
 p3
 dev.off()
-
 ```
 
+# Figure 3
 
+The data is stored in four different data files (one for each curve). Import them and a column specifying their condition.
+
+```{r}
+figure4a <- read.table("Figure4a.txt",sep="\t",header=FALSE)
+names(figure4a) <- c("Ca","ybar")
+figure4a$condition <- "no target"
+
+figure4b <- read.table("Figure4b.txt",sep="\t",header=FALSE)
+names(figure4b) <- c("Ca","ybar")
+figure4b$condition <- "R state"
+
+figure4c <- read.table("Figure4c.txt",sep="\t",header=FALSE)
+names(figure4c) <- c("Ca","ybar")
+figure4c$condition <- "T state"
+
+figure4d <- read.table("Figure4d.txt",sep="\t",header=FALSE)
+names(figure4d) <- c("Ca","ybar")
+figure4d$condition <- "+CaMKII"
+```
+
+Concatenate all the data for figure 4 into one big data frame
+
+```{r}
+figure4 <- rbind(figure4a,figure4b,figure4c,figure4d)
+```
+
+Plot the data:
+
+```{r}
+p4 <- ggplot(figure4, aes(x=Ca,y=ybar,col=condition))
+p4 <- p4+geom_line()+ scale_x_log10()
+p4 <- p4 + ylab("fractional occupancy") + xlab("[Ca] (M)")
+```

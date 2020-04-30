@@ -1,0 +1,35 @@
+---
+title: "Calmodulin model plots"
+author: "MI Stefan"
+date: "29/04/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load necessary libraries
+
+```{r}
+library(ggplot2)
+```
+
+# Figure 3
+
+Import data (this assumes the working directory is set correctly)
+
+```{r}
+figure3 <- read.table("Figure3.txt",sep="\t",header=FALSE)
+names(figure3) <- c("Ca","saturation")
+```
+
+```{r}
+p3 <- ggplot(figure3, aes(x=Ca,y=saturation))
+p3 <- p3 + geom_point() + scale_x_log10()
+p3 <- p3 + ylab("[Ca_bound]/[calmodulin]") + xlab("[Ca] (M)")
+p3 <- p3 + ggtitle("Calmodulin saturation")
+p3 
+```
+
+
